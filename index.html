@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ISTIRAHAT</title>
+   <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      background-image: url("bg.png");
+      }
+      .card {
+         background-color: white;
+         box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 7px 21px 0 rgba(0, 0, 0, 0.20);
+         box-sizing: border-box;
+         width: 70%;
+         font-family: sans-serif;
+         margin: 0 auto;
+         margin-top: 50px;
+         padding: 10px;
+         border-radius: 10px;
+         transition-duration: 0.1s;
+      }
+      .card:hover{
+        width: 80%;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.3), 0 7px 21px 0 rgba(0, 0, 0, 0.20);
+      }
+      .card-text {
+        
+        font-weight: bold;
+         padding: 10px;
+         font-size: 30px;
+         text-align: center;
+      }
+      .card > img {
+         display: block;
+         width:40%;
+         height: auto;
+         border-radius: 50%;
+         margin: 0 auto;
+         padding: 50px;
+        
+         
+      }
+      button {
+         display: block;
+         font-family: sans-serif;
+         border: none;
+         padding: 10px 20px;
+         font-size: 15px;
+         text-align: center;
+         border-radius: 20px;
+         outline: none;
+         margin: 0 auto;
+         margin-top: 10px;
+         -webkit-transition-duration: 1s; /* for Safari */
+         transition-duration: 1s;
+         background-color: rgb(23, 52, 89);
+         color: #f8f9f9;
+         box-shadow: .5px .5px 1px 2px #000000;
+      }
+      button:hover {
+         background-color: #f8f9f9;
+         color: rgb(23, 52, 89);
+         box-shadow: 1px 1px 2px 3px #000000;
+         cursor: pointer;
+      }
+      .status {
+        background-color: red;
+        color: white;
+        font-size: 24px;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        margin: 0 auto;
+        width: ;
+      }
+      #menit {
+        text-align: center;
+        color:#06006c
+        
+      }
+      #ket {
+        text-align: center;
+      }
+      
+@media only screen and (min-width: 480px) {
+         .card {
+            width: 500px;
+            height: auto;
+         }
+         .card:hover{
+           width: 520px;
+         }
+      }
+   </style>
+   <script type="text/javascript" charset="utf-8">
+     var myInterval;
+     var jam = 1
+     var menit = 30;
+     var detik = 0;
+   </script>
+</head>
+<body>
+   <div class="card">
+      <img src="foto2.jpg" />
+      <div class="card-text">
+         Hafidz Thalib Habibi
+      </div>
+      <p class="status" id="status">Sedang Bekerja</p>
+      <p style="display:none" id="ket">Masuk kembali dalam:</p>
+      <h1 style="display:none"id="menit">Memulai...</h1>
+   <button id="tombol" type="submit" onclick="fungsiRest()">Mulai Istirahat</button>
+   <button style="display:none" id="stop" type="submit" onclick="stop()">Stop</button>
+   
+   </div>
+   
+   <script type="text/javascript" charset="utf-8">
+     var statusIstirahat = false;
+     
+     function fungsiRest() {
+       
+        var status = document.getElementById("status");
+        status.innerHTML = "Sedang Istirahat";  
+        status.style.backgroundColor = "green";
+        statusIstirahat = true;
+        statusTombol();
+        hitungMundur();
+     }
+     
+     function statusTombol(){
+       if(statusIstirahat==true){
+         var tombol = document.getElementById("tombol");
+         
+         tombol.style.display = "none";
+         
+       }
+     }
+     function hitungMundur(){
+      // Tentukan waktu sekarang dan waktu yang ditentukan
+      const now = new Date();
+      const targetTime = new Date(now.getTime() + jam * 60 * 60 * 1000 + menit * 60 * 1000);
+       
+       var keterangan = document.getElementById("ket");
+       var tampilWaktu = document.getElementById("menit");
+       keterangan.style.display = "block";
+       tampilWaktu.style.display = "block";
+
+       myInterval = setInterval(function(){
+         const currentTime = new Date();
+          const diff = targetTime - currentTime;
+
+          // Hitung jam, menit, dan detik
+          const hours = Math.floor(diff / (60 * 60 * 1000));
+          const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+          const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+
+          // Update elemen untuk menampilkan hitung mundur
+          tampilWaktu.innerHTML = `${hours} jam ${minutes} menit ${seconds} detik`;
+
+          // Jika waktu habis, berhenti dan kosongkan elemen
+          if (diff < 0) {
+             clearInterval(myInterval);
+             tampilWaktu.innerHTML = "";
+              keterangan.style.display = "none";
+            var status = document.getElementById("status");
+             status.innerHTML = "Istirahat Selesai";
+             status.style.backgroundColor = "red";
+             statusIstirahat = false;
+             tombol.style.display = "block";
+          }
+
+
+
+      //  detik -= 1;
+      //  if(detik==0){
+      //    detik = 60;
+      //    menit -=1;
+        
+      //    if(menit<=0){
+      //       var stopBtn = document.getElementById("stop");
+      //       var status = document.getElementById("status");
+      //       keterangan.innerHTML = "Telat selama:"
+      //       status.innerHTML = "Istirahat Selesai";  
+      //       status.style.backgroundColor = "red";
+      //       stopBtn.style.display = "block";
+           
+      //    }
+      //  }
+       
+       //tampilWaktu.innerHTML = hours+" jam "+ minutes+" menit "+seconds+" detik";
+       },1000);
+           }
+           
+       function stop(){    
+        var stopBtn = document.getElementById("stop");
+        var status = document.getElementById("status");
+        status.innerHTML = "Sedang Bekerja";  
+        stopBtn.style.display = "none";
+        keterangan.style.display = "none";
+        tampilWaktu.style.display = "none";
+        tampilWaktu.style.display = "none";
+        tombol.style.display = "block";
+        clearInterval(myInterval);
+        menit = 59;
+        detik = 60;
+       }
+     
+   
+   </script>
+</body>
+</html>
